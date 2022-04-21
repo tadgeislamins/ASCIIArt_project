@@ -1,7 +1,6 @@
 import telebot
 # from telebot import types
 
-<<<<<<< HEAD
 cmd_create = "Создать свой ASCII-арт"
 cmd_premade = "Выбрать ASCII-арт из коллекции"
 cmd_goose = "Запустить гуся"
@@ -11,9 +10,6 @@ msg_guide_sendimg = "Пожалуйста, отправьте картинку"
 msg_wip = "Coming soon..."
 
 bot = telebot.TeleBot(open('token.txt').read()[:-1])  # токен бота; в телеге t.me/ASCIIArt_project_bot
-=======
-bot = telebot.TeleBot("5385485353:AAH92twkm4czMP0uEy-ZYLqSlGSfCA179D0")  # токен бота; в телеге t.me/ASCIIArt_project_bot
->>>>>>> 251ce8532bec662901b4e2a4713ed5d1aebd3ab0
 
 # старт и кнопочки
 @bot.message_handler(commands=['start'])
