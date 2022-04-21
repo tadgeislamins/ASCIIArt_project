@@ -1,8 +1,7 @@
 import telebot
 from telebot import types
 
-bot = telebot.TeleBot(
-    "5385485353:AAH92twkm4czMP0uEy-ZYLqSlGSfCA179D0")  # токен бота; в телеге t.me/ASCIIArt_project_bot
+bot = telebot.TeleBot("5385485353:AAH92twkm4czMP0uEy-ZYLqSlGSfCA179D0")  # токен бота; в телеге t.me/ASCIIArt_project_bot
 
 # старт и кнопочки
 @bot.message_handler(commands=['start'])
