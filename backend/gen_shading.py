@@ -1,6 +1,13 @@
 from char_tensors import totensor
 
-symbols = ['a', 'b', 99, 100, 101]
 
-for i in totensor(symbols).values():
-    print(i[0][0:30][0:60])
+def shade(tensor):
+    return float(tensor.mean())
+
+
+chlist = range(33, 127)
+shadelist = sorted(
+    [(chr(ch), shade(totensor(ch))) for ch in chlist],
+    key=lambda tup: tup[1])
+for i in shadelist:
+    print(i)
