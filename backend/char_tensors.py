@@ -14,7 +14,7 @@ def totensor(ch, width=30, texttoframe=1.5):
     # рисуем картинку
     img = Image.new('RGB', (width, width * 2), (255, 255, 255))
     d = ImageDraw.Draw(img)
-    font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', int(width * texttoframe))
+    font = ImageFont.truetype('DejaVuSansMono.ttf', int(width * texttoframe))
 
     d.text((width / 2, width), ch, fill=(0, 0, 0), font=font, anchor='mm')
 
