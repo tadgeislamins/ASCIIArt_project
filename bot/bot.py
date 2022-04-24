@@ -1,5 +1,5 @@
 import telebot
-# from telebot import types
+from telebot import types
 
 cmd_create = "Создать свой ASCII-арт"
 cmd_premade = "Выбрать ASCII-арт из коллекции"
