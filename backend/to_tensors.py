@@ -12,5 +12,5 @@ def pic_to_tensors(image, ascii_w=50, tw=10):
     tlist = []
     for long_tensors in torch.tensor_split(tensor_resized, ascii_w, dim=1):
         tensors_in_row = torch.tensor_split(long_tensors, ascii_w, dim=2)
-        tlist.append(tensors_in_row)
+        tlist.extend(tensors_in_row)
     return tlist
