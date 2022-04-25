@@ -4,7 +4,7 @@ import torchvision
 import torchvision.transforms as transforms
 
 
-def totensor(ch, width=30, texttoframe=1.5):
+def totensor(ch, width=30, textsize=1.5, tratio=2):
     # переводим аскии-код в символ если необходимо
     try:
         ch = chr(ch)
@@ -12,9 +12,9 @@ def totensor(ch, width=30, texttoframe=1.5):
         pass
 
     # рисуем картинку
-    img = Image.new('RGB', (width, width * 2), (255, 255, 255))
+    img = Image.new('RGB', (width, width * tratio), (255, 255, 255))
     d = ImageDraw.Draw(img)
-    font = ImageFont.truetype('DejaVuSansMono.ttf', int(width * texttoframe))
+    font = ImageFont.truetype('DejaVuSansMono.ttf', int(width * textsize))
 
     d.text((width / 2, width), ch, fill=(0, 0, 0), font=font, anchor='mm')
 
