@@ -3,3 +3,4 @@ bot/token.txt
 *.jpg
 *.jpeg
 *.png
+.DS_Store
