@@ -4,7 +4,7 @@ import torchvision
 import torchvision.transforms as transforms
 
 
-def totensor(ch, width=30, textsize=1.5, tratio=2):
+def char_t(ch, width=30, textsize=1.5, tratio=2):
     # переводим аскии-код в символ если необходимо
     try:
         ch = chr(ch)
