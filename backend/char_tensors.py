@@ -1,6 +1,4 @@
-import torch
 from PIL import Image, ImageDraw, ImageFont
-import torchvision
 import torchvision.transforms as transforms
 
 

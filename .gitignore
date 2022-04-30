@@ -4,3 +4,4 @@ bot/reply.txt
 *.jpg
 *.jpeg
 *.png
+.DS_Store
