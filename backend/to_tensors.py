@@ -11,5 +11,6 @@ def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     tensor_resized = F.resize(img_t, [tw * ascii_w * tratio, tw * ascii_w])
     tlist = []
     for long_tensors in torch.tensor_split(tensor_resized, ascii_w, dim=1):
-        tlist.extend(torch.tensor_split(long_tensors, ascii_w, dim=2))
-    return tlist
+        tlist.append(torch.stack(torch.tensor_split(long_tensors, ascii_w, dim=2)))
+    stacked = torch.stack(tlist)
+    return stacked
