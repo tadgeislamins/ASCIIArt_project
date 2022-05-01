@@ -4,14 +4,16 @@ from PIL import Image
 import torchvision.transforms.functional as F
 
 
+def resize(image, w, th):
+    size = F.get_image_size(image)
+    h = int(w * size[1] / size[0] // th * th)
+    transform = T.Compose([T.ToTensor()])
+    return F.resize(transform(image), [h, w]), h * th
+
+
 def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     image = Image.open(image)
-    size = F.get_image_size(image)
-    ratio = size[1] / size[0]
-    ascii_h = int(tw * ascii_w * ratio // (tw * tratio))
-    transform = T.Compose([T.ToTensor()])
-    img_t = transform(image)
-    t_resized = F.resize(img_t, [ascii_h * (tw * tratio), tw * ascii_w])
+    t_resized, ascii_h = resize(image, tw * ascii_w, tw * tratio)
 
     # нормализуем всю картинку, отдельно для каждого измерения
     mean, std = t_resized.mean([1, 2]), t_resized.std([1, 2])
