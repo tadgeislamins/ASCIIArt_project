@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
-import torchvision.transforms as transforms
+import torchvision.transforms as T
 
 
 def char_t(ch, width=30, textsize=1.5, tratio=2):
@@ -17,5 +17,5 @@ def char_t(ch, width=30, textsize=1.5, tratio=2):
     d.text((width / 2, width), ch, fill=(0, 0, 0), font=font, anchor='mm')
 
     # делаем тензором
-    tf = transforms.ToTensor()
+    tf = T.ToTensor()
     return tf(img)
