@@ -25,4 +25,4 @@ def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     return stacked
 
 
-pic_to_tensors('landscape.jpeg')
+
