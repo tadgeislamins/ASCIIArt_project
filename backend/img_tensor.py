@@ -8,7 +8,7 @@ def resize(image, w, th):
     size = F.get_image_size(image)
     h = int(w * size[1] / size[0] // th * th)
     transform = T.Compose([T.ToTensor()])
-    return F.resize(transform(image), [h, w]), h * th
+    return F.resize(transform(image), [h, w]), h // th
 
 
 def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
