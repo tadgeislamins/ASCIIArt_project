@@ -8,7 +8,7 @@ def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     image = Image.open(image)
     size = F.get_image_size(image)
     ratio = size[0] / size[1] if size[0] > size[1] else size[1] / size[0]
-    ascii_h = int(tw * ascii_w * ratio // 20 * 20)
+    ascii_h = int(tw * ascii_w * ratio // tw * tratio * tw * tratio)
     transform = T.Compose([T.ToTensor()])
     img_t = transform(image)
     t_resized = F.resize(img_t, [ascii_h, tw * ascii_w])
