@@ -12,7 +12,7 @@ def char_t(ch, width=30, textsize=1.5, tratio=2):
     # рисуем картинку
     img = Image.new('RGB', (width, width * tratio), (255, 255, 255))
     d = ImageDraw.Draw(img)
-    font = ImageFont.truetype('DejaVuSansMono.ttf', int(width * textsize))
+    font = ImageFont.truetype('files/font.ttf', int(width * textsize))
 
     d.text((width / 2, width), ch, fill=(0, 0, 0), font=font, anchor='mm')
 

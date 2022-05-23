@@ -1,5 +1,8 @@
 import telebot
 from telebot import types
+from io import BytesIO, StringIO
+from gen_shading import gen_shading
+from PIL import Image
 
 cmd_create_shade = 'Создать тональный ASCII-арт'
 cmd_create_line = 'Создать контурный ASCII-арт'
@@ -14,7 +17,8 @@ msg_wip = 'Coming soon...'
 msg_nan = 'Это не число. Размер арта — по умолчанию.'
 msg_notype = 'Сначала выберите тип арта.'
 
-bot = telebot.TeleBot(open('token.txt').read()[:-1])
+token = open('token.txt').read()[:-1]
+bot = telebot.TeleBot(token)
 # токен бота; в телеге t.me/ASCIIArt_project_bot
 
 size = {'shade': 50, 'line': 50}
@@ -37,19 +41,6 @@ def start(message):
     bot.send_message(chat, msg_init, reply_markup=markup)
 
 
-# ладно, мне не нравится
-# позволяет изменить размер арта на этапе выбора картинки
-# @bot.message_handler(func=lambda x: bool(art_type), content_types=['text'])
-# def resize(message):
-#     if message.text.isdigit():
-#         global size
-#         size[art_type] = int(message.text)
-#         bot.send_message(chat, msg_sizeset.format(message.text))
-#         bot.send_message(chat, msg_guide_sendimg.format(size[art_type]))
-#     else:
-#         bot.send_message(chat, msg_nan)
-
-
 @bot.message_handler(content_types=['text'])
 def functions(message):
     global art_type
@@ -66,7 +57,7 @@ def functions(message):
         bot.send_message(chat, msg_wip)
 
     elif message.text == cmd_goose:
-        with open('goose.txt', encoding='utf8') as goose:
+        with open('files/goose.txt', encoding='utf8') as goose:
             goose = goose.read()
         bot.send_message(chat, goose)
 
@@ -81,16 +72,15 @@ def send_art(message):
         else:
             bot.send_message(chat, msg_nan)
 
-    with open('reply.txt', 'w', encoding='utf-8') as reply:
-        reply.write('Image with size {}'.format(sz))
+    file = bot.download_file(bot.get_file(message.photo[-1].file_id).file_path)
+    img = BytesIO(file)
 
-    with open('reply.txt', encoding='utf-8') as reply:
-        if art_type == 'shade':
-            bot.send_document(chat, reply)
-        elif art_type == 'line':
-            bot.send_document(chat, reply)
-        else:
-            bot.send_message(chat, msg_notype)
+    if art_type == 'shade':
+        bot.send_document(chat, StringIO(gen_shading(img)), visible_file_name='art.txt')
+    elif art_type == 'line':
+        bot.send_message(chat, msg_wip)
+    else:
+        bot.send_message(chat, msg_notype)
 
 
 bot.polling(none_stop=True, interval=0)
