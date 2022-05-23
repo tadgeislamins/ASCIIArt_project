@@ -23,7 +23,7 @@ def gen_shading(img):
     img_t = pic_to_tensors(img).mean([2, 3, 4])
     char_amp = max(means) - min(means)
     img_amp = img_t.max() - img_t.min()
-    # img_t = img_t * char_amp / img_amp
+    img_t = img_t * char_amp / img_amp
     print(means.median(), img_t.median())
 
     art = ''
