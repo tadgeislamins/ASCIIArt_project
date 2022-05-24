@@ -14,13 +14,13 @@ def match(val, list):
             return match(val, list[half:])
 
 
-def gen_shading(img):
+def gen_shading(img, width=50):
     chlist = [chr(i) for i in range(33, 127)]
 
     means = pd.Series([float(char_t(ch).mean()) for ch in chlist], index=chlist)
     means = ((means - means.mean()) / means.std()).sort_values()
 
-    img_t = pic_to_tensors(img).mean([2, 3, 4])
+    img_t = pic_to_tensors(img, ascii_w=width).mean([2, 3, 4])
     char_amp = max(means) - min(means)
     img_amp = img_t.max() - img_t.min()
     img_t = img_t * char_amp / img_amp

@@ -76,7 +76,7 @@ def send_art(message):
     img = BytesIO(file)
 
     if art_type == 'shade':
-        bot.send_document(chat, StringIO(gen_shading(img)), visible_file_name='art.txt')
+        bot.send_document(chat, StringIO(gen_shading(img, width=sz)), visible_file_name='art.txt')
     elif art_type == 'line':
         bot.send_message(chat, msg_wip)
     else:
