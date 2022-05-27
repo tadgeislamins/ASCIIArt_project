@@ -13,7 +13,6 @@ def resize(image, w, th):
 
 def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     image = Image.open(image)
-    print(type(image))
     t_resized, ascii_h = resize(image, tw * ascii_w, tw * tratio)
 
     # НЕ нормализуем всю картинку, отдельно для каждого измерения
