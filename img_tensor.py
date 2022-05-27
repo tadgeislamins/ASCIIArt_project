@@ -16,13 +16,13 @@ def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     print(type(image))
     t_resized, ascii_h = resize(image, tw * ascii_w, tw * tratio)
 
-    # нормализуем всю картинку, отдельно для каждого измерения
-    mean, std = t_resized.mean([1, 2]), t_resized.std([1, 2])
-    normalize = T.Compose([T.Normalize(mean, std)])
-    t_normalized = normalize(t_resized)
+    # НЕ нормализуем всю картинку, отдельно для каждого измерения
+    # mean, std = t_resized.mean([1, 2]), t_resized.std([1, 2])
+    # normalize = T.Compose([T.Normalize(mean, std)])
+    # t_normalized = normalize(t_resized)
 
     tlist = []
-    for long_tensors in torch.tensor_split(t_normalized, ascii_h, dim=1):
+    for long_tensors in torch.tensor_split(t_resized, ascii_h, dim=1):
         tlist.append(torch.stack(torch.tensor_split(long_tensors, ascii_w, dim=2)))
     stacked = torch.stack(tlist)
     return stacked
