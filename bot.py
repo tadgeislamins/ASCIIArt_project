@@ -30,60 +30,57 @@ df = pd.DataFrame()
 @bot.message_handler(commands=['start'])
 def start(message):
 
-    global chat
-    chat = message.from_user.id
-
     global df
-    row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50}, index=[chat])
+    row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50}, index=[message.from_user.id])
     df = pd.concat([df, row])
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for cmd in [cmd_create_shade, cmd_create_line, cmd_premade, cmd_goose]:
         markup.add(types.KeyboardButton(cmd))
-    bot.send_message(chat, msg_init, reply_markup=markup)
+    bot.send_message(message.from_user.id, msg_init, reply_markup=markup)
 
 
 @bot.message_handler(content_types=['text'], func=lambda message: message.from_user.id in df.index)
 def functions(message):
 
     if message.text == cmd_create_shade:
-        df.at[chat, 'type'] = 'shade'
-        bot.send_message(chat, msg_guide_sendimg.format(df.at[chat, 'shade_size']))
-
+        df.at[message.from_user.id, 'type'] = 'shade'
+        bot.send_message(message.from_user.id, msg_guide_sendimg.format(str(df.at[message.from_user.id, 'shade_size'])))
+        print(df.at[message.from_user.id, 'shade_size'])
     if message.text == cmd_create_line:
-        df.at[chat, 'type'] = 'line'
-        bot.send_message(chat, msg_guide_sendimg.format(df.at[chat, 'line_size']))
+        df.at[message.from_user.id, 'type'] = 'line'
+        bot.send_message(message.from_user.id, msg_guide_sendimg.format(str(df.at[message.from_user.id, 'line_size'])))
 
     elif message.text == cmd_premade:
-        bot.send_message(chat, msg_wip)
+        bot.send_message(message.from_user.id, msg_wip)
 
     elif message.text == cmd_goose:
         with open('files/goose.txt', encoding='utf8') as goose:
             goose = goose.read()
-        bot.send_message(chat, goose)
+        bot.send_message(message.from_user.id, goose)
 
 
 # тут он отправляет txt файл в ответ на картинку
 @bot.message_handler(content_types=['photo'], func=lambda message: message.from_user.id in df.index)
 def send_art(message):
-    if df.at[chat, 'type'] == '':
-        bot.send_message(chat, msg_notype)
+    if df.at[message.from_user.id, 'type'] == '':
+        bot.send_message(message.from_user.id, msg_notype)
     else:
         if message.caption:
             if message.caption.isdigit():
-                df.at[chat, str(df.at[chat, 'type']) + '_size'] = int(message.caption)
+                df.at[message.from_user.id, str(df.at[message.from_user.id, 'type']) + '_size'] = int(message.caption)
             else:
-                bot.send_message(chat, msg_nan)
+                bot.send_message(message.from_user.id, msg_nan)
 
     file = bot.download_file(bot.get_file(message.photo[-1].file_id).file_path)
     img = BytesIO(file)
 
-    if df.at[chat, 'type'] == 'shade':
-        bot.send_document(chat, StringIO(gen_shading(img, width=df.at[chat, 'shade_size'])), visible_file_name='art.txt')
-    elif df.at[chat, 'type'] == 'line':
-        bot.send_message(chat, msg_wip)
+    if df.at[message.from_user.id, 'type'] == 'shade':
+        bot.send_document(message.from_user.id, StringIO(gen_shading(img, width=df.at[message.from_user.id, 'shade_size'])), visible_file_name='art.txt')
+    elif df.at[message.from_user.id, 'type'] == 'line':
+        bot.send_message(message.from_user.id, msg_wip)
     else:
-        bot.send_message(chat, msg_notype)
+        bot.send_message(message.from_user.id, msg_notype)
 
 
 bot.polling(none_stop=True, interval=0)
