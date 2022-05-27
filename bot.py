@@ -29,11 +29,11 @@ df = pd.DataFrame()
 # старт и кнопочки
 @bot.message_handler(commands=['start'])
 def start(message):
-
     global df
-    row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50}, index=[message.from_user.id])
-    df = pd.concat([df, row])
-
+    if message.from_user.id not in df.index:
+        row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50}, index=[message.from_user.id])
+        df = pd.concat([df, row])
+        df.to_csv('df.csv')
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for cmd in [cmd_create_shade, cmd_create_line, cmd_premade, cmd_goose]:
         markup.add(types.KeyboardButton(cmd))
@@ -46,7 +46,7 @@ def functions(message):
     if message.text == cmd_create_shade:
         df.at[message.from_user.id, 'type'] = 'shade'
         bot.send_message(message.from_user.id, msg_guide_sendimg.format(str(df.at[message.from_user.id, 'shade_size'])))
-        print(df.at[message.from_user.id, 'shade_size'])
+
     if message.text == cmd_create_line:
         df.at[message.from_user.id, 'type'] = 'line'
         bot.send_message(message.from_user.id, msg_guide_sendimg.format(str(df.at[message.from_user.id, 'line_size'])))
