@@ -15,6 +15,8 @@ def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
     image = Image.open(image)
     t_resized, ascii_h = resize(image, tw * ascii_w, tw * tratio)
 
+    t_resized = t_resized[0:3]
+
     # НЕ нормализуем всю картинку, отдельно для каждого измерения
     # mean, std = t_resized.mean([1, 2]), t_resized.std([1, 2])
     # normalize = T.Compose([T.Normalize(mean, std)])

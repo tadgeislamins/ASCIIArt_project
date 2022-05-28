@@ -1,6 +1,7 @@
 from char_tensors import char_t
 from img_tensor import pic_to_tensors
 import pandas as pd
+from math import pi
 
 
 def match(val, list):
@@ -21,7 +22,11 @@ def gen_shading(img, width=50):
     tones = ((tones - tones.min()) / (tones.max() - tones.min())).sort_values()
 
     img_t = pic_to_tensors(img, ascii_w=width).mean([2, 3, 4])
-    img_t = (img_t - img_t.min()) / (img_t.max() - img_t.min())
+    img_t = (img_t - img_t.min()) / (img_t.max() - img_t.min()) * pi / 2
+    img_t = img_t.sin()
+    img_t = img_t / img_t.max()
+
+    print(img_t.min(), img_t.max(), tones.min(), tones.max())
 
     art = ''
     for row in img_t:
@@ -33,5 +38,5 @@ def gen_shading(img, width=50):
     return art
 
 
-with open('art.txt', 'w') as f:
-    f.write(gen_shading('files/test2.png'))
+with open('art1.txt', 'w') as f:
+    f.write(gen_shading('files/test2.jpg'))
