@@ -8,11 +8,11 @@ rotate = transforms.Compose([
     transforms.RandomRotation(10, fill=255),
 ])
 
-mkdir('dataset')
+mkdir('trainset')
 
 for ch in range(33, 127):
     t = char_t(ch)
-    mkdir('dataset/' + str(ch))
+    mkdir('trainset/' + str(ch))
 
     for i in range(10):
         t = rotate(t)

@@ -8,8 +8,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 from tqdm.auto import tqdm
-import torch.nn as nn
-import torch.nn.functional as F
+from PIL import Image
 
 
 from torchvision.datasets import ImageFolder
@@ -20,6 +19,9 @@ dataset = ImageFolder(
     "./trainset",
     transform=ToTensor(),
 )
+
+# for i in dataset:
+#     print(i[0].shape)
 
 train_set, test_set = torch.utils.data.random_split(
     dataset,
@@ -52,6 +54,8 @@ def train_epoch(
             images = images.to(device)
             labels = labels.to(device)
             predicted = model(images)
+            with open('log.txt', mode='w') as f:
+                f.write(str(min(labels)) + '\n' + str(max(labels)))
             loss = criterion(predicted, labels)
             # Update weights
             loss.backward()
@@ -152,13 +156,13 @@ class Net(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 3)
         self.fc1 = nn.Linear(1040, 500)
-        self.fc2 = nn.Linear(500, 3)
+        self.fc2 = nn.Linear(500, 94)
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
         x = torch.flatten(x, 1)  # flatten all dimensions except batch
-        x = self.pool(F.relu(self.fc1(x)))
+        x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
 
@@ -170,3 +174,8 @@ optimizer = torch.optim.Adam(net.parameters())
 device = "cpu"
 
 fit(net, 11, train_dataloader, test_dataloader, optimizer, criterion, device=device)
+
+# tf = ToTensor()
+# for ch in range(33, 127):
+#     for i in range(10):
+#         print(tf(Image.open('trainset/' + str(ch) + '/' + str(i) + '.jpg')).shape)
