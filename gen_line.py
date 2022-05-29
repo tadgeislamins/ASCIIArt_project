@@ -9,9 +9,6 @@ from torchvision.transforms import ToTensor, Grayscale, Compose
 from torchvision.transforms.functional import invert
 from torch.nn.functional import conv2d
 from torchvision.utils import save_image
-import scipy
-import numpy
-from scipy import ndimage
 
 
 def sobelize(img):
