@@ -54,8 +54,6 @@ def train_epoch(
             images = images.to(device)
             labels = labels.to(device)
             predicted = model(images)
-            with open('log.txt', mode='w') as f:
-                f.write(str(min(labels)) + '\n' + str(max(labels)))
             loss = criterion(predicted, labels)
             # Update weights
             loss.backward()
@@ -174,6 +172,7 @@ optimizer = torch.optim.Adam(net.parameters())
 device = "cpu"
 
 fit(net, 11, train_dataloader, test_dataloader, optimizer, criterion, device=device)
+torch.save(net, 'files/model.pth') # вставьте ваш адрес для сохранения
 
 # tf = ToTensor()
 # for ch in range(33, 127):
