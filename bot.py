@@ -33,7 +33,7 @@ def start(message):
     if message.from_user.id not in df.index:
         row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50}, index=[message.from_user.id])
         df = pd.concat([df, row])
-        
+
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for cmd in [cmd_create_shade, cmd_create_line, cmd_premade, cmd_goose]:
         markup.add(types.KeyboardButton(cmd))

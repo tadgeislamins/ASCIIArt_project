@@ -11,16 +11,16 @@ def resize(image, w, th):
     return F.resize(transform(image), [h, w]), h // th
 
 
-def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2):
-    image = Image.open(image)
+def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2, split=True):
+    try:
+        image = Image.open(image)
+    except AttributeError:
+        transform = T.ToPILImage()
+        image = transform(image)
+
     t_resized, ascii_h = resize(image, tw * ascii_w, tw * tratio)
 
     t_resized = t_resized[0:3]
-
-    # НЕ нормализуем всю картинку, отдельно для каждого измерения
-    # mean, std = t_resized.mean([1, 2]), t_resized.std([1, 2])
-    # normalize = T.Compose([T.Normalize(mean, std)])
-    # t_normalized = normalize(t_resized)
 
     tlist = []
     for long_tensors in torch.tensor_split(t_resized, ascii_h, dim=1):

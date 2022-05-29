@@ -18,4 +18,4 @@ for ch in range(33, 127):
         t = rotate(t)
         t += torch.randn(t.size()) * 0.1
 
-        save_image(t, 'dataset/' + str(ch) + '/' + str(i) + '.jpg')
+        save_image(t, 'trainset/' + str(ch) + '/' + str(i) + '.jpg')

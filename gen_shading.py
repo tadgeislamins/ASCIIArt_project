@@ -36,7 +36,3 @@ def gen_shading(img, width=50):
         art += '\n'
 
     return art
-
-
-with open('art1.txt', 'w') as f:
-    f.write(gen_shading('files/test2.jpg'))

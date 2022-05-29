@@ -1,14 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
+from PIL import Image
 from torch.nn.functional import conv2d
 
 
 def sobelize(img):
     # получаем тензор
-    img_matrix = np.array(img)
+    # img = pic_to_tensors(img, split=False).unsqueeze_(0)
 
-    img_tensor = torch.tensor([img_matrix], dtype=torch.float)
+    img_matrix = np.array(Image.open(img))
+    img_tensor = torch.tensor(np.array([img_matrix]), dtype=torch.float)
 
     img_tensor = img_tensor.permute(0, 3, 1, 2)
 
@@ -33,11 +35,15 @@ def sobelize(img):
     kernel = torch.tensor(kernel, dtype=torch.float)
 
     img_conv_ver = conv2d(img_tensor, kernel)
-
     img_conv_ver = img_conv_ver.permute(0, 2, 3, 1)
 
-    img_conv = torch.sqrt(img_conv_ver**2 + img_conv_hor**2)
+    img_conv = torch.sqrt(img_conv_ver**2 + img_conv_hor**2).permute(0, 3, 1, 2)[0]
 
-    plt.figure(figsize=(1.5 * 7, 1.5 * 4))
-    plt.imshow(img_conv[0, :, :, 0])
-    plt.show()
+    return img_conv
+
+
+img_conv = sobelize('files/test1.jpg')
+# plt.figure(figsize=(1.5 * 7, 1.5 * 4))
+# plt.imshow(img_conv[0, :, :, 0])
+# plt.show()
+img_conv
