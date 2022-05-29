@@ -1,19 +1,16 @@
 import torch
 from img_tensor import pic_to_tensors
 from PIL import Image
-import matplotlib.pyplot as plt
 import os
 import numpy as np
 from torchvision.datasets import ImageFolder
-from torchvision.transforms import ToTensor, Grayscale, Compose
-from torchvision.transforms.functional import invert
 from torch.nn.functional import conv2d
 from torchvision.utils import save_image
 
 
 def sobelize(img):
     # получаем тензор
-    img_matrix = np.array(img)
+    img_matrix = np.array(img)[:, :, 0:3]
     img_tensor = torch.tensor([img_matrix], dtype=torch.float)
 
     img_tensor = img_tensor.permute(0, 3, 1, 2)
@@ -45,9 +42,7 @@ def sobelize(img):
 
 
 def gen_line(img, width=20):
-    # tf = Compose([Grayscale])
-    # totensor = ToTensor()
-    # img_t = totensor(sobel(Image.open(img)))
+
     img_t = 1 - sobelize(Image.open(img))
     return img_t
 
@@ -67,5 +62,5 @@ def gen_line(img, width=20):
     test_tens = torch.stack(test_list)
 
 
-# gen_line('files/test2.jpg').shape
-save_image(gen_line('files/test2.jpg'), 'test.jpg')
+# gen_line('files/test2.png')
+save_image(gen_line('files/test2.png'), 'test.jpg')
