@@ -1,15 +1,11 @@
-import glob
 import sys
-import warnings
 import os
 
-import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
 from tqdm.auto import tqdm
-from PIL import Image
 
 
 from torchvision.datasets import ImageFolder
@@ -45,13 +41,11 @@ def train_epoch(
     total_loss = 0
     num_batches = 0
     all_losses = []
-    total_predictions = np.array([])#.reshape((0, ))
-    total_labels = np.array([])#.reshape((0, ))
+    total_predictions = np.array([])
+    total_labels = np.array([])
     with tqdm(total=len(data_loader), file=sys.stdout) as prbar:
         for images, labels in data_loader:
             # Move Batch to GPU
-            #patches = images.data.unfold(0, 3, 3).unfold(1, 224, 224).unfold(2, 224, 224)
-            #images = torch.flatten(patches, 0, 2)
             images = images.to(device)
             labels = labels.to(device)
             predicted = model(images)
@@ -117,7 +111,7 @@ def fit(
     device
 ):
     all_train_losses = []
-    plot = []
+    # plot = []
     epoch_train_losses = []
     epoch_eval_losses = []
     for epoch in range(epochs):
@@ -173,7 +167,7 @@ optimizer = torch.optim.Adam(net.parameters())
 device = "cpu"
 
 fit(net, 11, train_dataloader, test_dataloader, optimizer, criterion, device=device)
-torch.save(net, 'files/model.pth') # вставьте ваш адрес для сохранения
+torch.save(net.state_dict(), 'files/model.pth')
 
 # tf = ToTensor()
 # for ch in range(33, 127):

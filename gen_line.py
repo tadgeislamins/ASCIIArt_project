@@ -6,7 +6,7 @@ import numpy as np
 from torchvision.datasets import ImageFolder
 from torch.nn.functional import conv2d
 from torchvision.utils import save_image
-
+from train import Net
 
 def sobelize(img):
     # получаем тензор
@@ -41,26 +41,30 @@ def sobelize(img):
     return img_conv / (img_conv.max())
 
 
-def gen_line(img, width=20):
+def gen_line(img, width=50):
+    chars = open('files/chars.txt').read()[:-1]
 
-    img_t = 1 - sobelize(Image.open(img))
-    return img_t
+    # return 1 - sobelize(Image.open(img))
+    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=30)
+    img_t = torch.flatten(img_t, end_dim=1)
 
     model = torch.load('files/model.pth')
+    model = Net()
+    model.load_state_dict(torch.load('files/model.pth'))
+    model.eval()
 
-    transform = ToTensor()
-
-    test_list = []
-
-    # for file in os.listdir("./MyDrive/neurowood/archive/testset"):
-    #     filename = os.fsdecode(file)
-    #     img = Image.open("./MyDrive/neurowood/archive/testset/" + filename)
-    #     img = transform(img)
-    #     test_list.append(img)
-
-
-    test_tens = torch.stack(test_list)
+    # return model(img_t).argmax(axis=1)
+    counter = width
+    art = ''
+    for ch in model(img_t).argmax(axis=1):
+        if counter <= 0:
+            art += '\n'
+            counter = width
+        art += chars[ch]
+        counter -= 1
+    return art
 
 
-# gen_line('files/test2.png')
-save_image(gen_line('files/test2.png'), 'test.jpg')
+# with open('test.txt', 'w') as f:
+#     f.write(gen_line('files/test2.jpg'))
+# save_image(gen_line('files/test_line.jpg'), 'test.jpg')
