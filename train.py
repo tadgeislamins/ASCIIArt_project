@@ -1,6 +1,7 @@
 import glob
 import sys
 import warnings
+import os
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -154,7 +155,7 @@ class Net(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 3)
         self.fc1 = nn.Linear(1040, 500)
-        self.fc2 = nn.Linear(500, 94)
+        self.fc2 = nn.Linear(500, len(os.listdir('trainset')))
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
