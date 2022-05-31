@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from torch import nn
 from tqdm.auto import tqdm
 
-
+import torchvision.models as models
 from torchvision.datasets import ImageFolder
 from torchvision.transforms import ToTensor
 
@@ -142,32 +142,21 @@ def fit(
         # plot.append((epoch_train_losses[-1], epoch_eval_losses[-1]))
 
 
-class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(3, 6, 3)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 3)
-        self.fc1 = nn.Linear(1248, 500)
-        self.fc2 = nn.Linear(500, len(os.listdir('trainset')))
+# model = models.resnet18(pretrained=True)
 
-    def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = torch.flatten(x, 1)  # flatten all dimensions except batch
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
+for param in model.parameters():
+    param.requires_grad = False
 
+model
 
-net = Net()
+model.fc = nn.Linear(512, len(os.listdir('trainset')))
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(net.parameters())
+optimizer = torch.optim.Adam(model.parameters())
 device = "cpu"
 
-fit(net, 4, train_dataloader, test_dataloader, optimizer, criterion, device=device)
-torch.save(net, 'files/model.pth')
+fit(model, 6, train_dataloader, test_dataloader, optimizer, criterion, device=device)
+torch.save(model, 'files/model.pth')
 
 # tf = ToTensor()
 # for ch in range(33, 127):

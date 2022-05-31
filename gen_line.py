@@ -8,6 +8,7 @@ from torch.nn.functional import conv2d
 from torchvision.utils import save_image
 from train import Net
 
+
 def sobelize(img):
     # получаем тензор
     img_matrix = np.array(img)[:, :, 0:3]
@@ -41,17 +42,16 @@ def sobelize(img):
     return img_conv / (img_conv.max())
 
 
-def gen_line(img, width=50):
+def gen_line(img, width=200):
     chars = open('files/chars.txt').read()[:-1]
 
     # return 1 - sobelize(Image.open(img))
-    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=10)
+    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=30)
     img_t = torch.flatten(img_t, end_dim=1)
-
     model = torch.load('files/model.pth')
-    model = Net()
-    model.load_state_dict(torch.load('files/model.pth'))
-    model.eval()
+    # model = Net()
+    # model.load_state_dict(torch.load('files/model.pth'))
+    # model.eval()
 
     # return model(img_t).argmax(axis=1)
     counter = width
@@ -65,6 +65,7 @@ def gen_line(img, width=50):
     return art
 
 
-# with open('test.txt', 'w') as f:
-#     f.write(gen_line('files/test2.jpg'))
-# save_image(gen_line('files/test_line.jpg'), 'test.jpg')
+# gen_line('files/test_line.jpg')
+with open('test.txt', 'w') as f:
+    f.write(gen_line('files/test2.jpg'))
+# save_image(gen_line('files/test2.jpg'), 'test.jpg')
