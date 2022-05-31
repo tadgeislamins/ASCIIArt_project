@@ -45,7 +45,7 @@ def gen_line(img, width=50):
     chars = open('files/chars.txt').read()[:-1]
 
     # return 1 - sobelize(Image.open(img))
-    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=30)
+    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=10)
     img_t = torch.flatten(img_t, end_dim=1)
 
     model = torch.load('files/model.pth')
