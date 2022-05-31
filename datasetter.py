@@ -5,12 +5,13 @@ from os import mkdir
 from char_tensors import char_t
 # from numpy.random import randint
 
-width = 10
+width = 30
 
 tf = transforms.Compose([
     transforms.RandomRotation(10, fill=1),
     transforms.Pad(width // 2, fill=1),
-    transforms.RandomCrop([width * 2, width])
+    transforms.RandomCrop([width * 2, width]),
+    # transforms.CenterCrop(224)
 ])
 
 mkdir('trainset')

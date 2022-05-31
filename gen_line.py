@@ -6,8 +6,6 @@ import numpy as np
 from torchvision.datasets import ImageFolder
 from torch.nn.functional import conv2d
 from torchvision.utils import save_image
-from train import Net
-
 
 def sobelize(img):
     # получаем тензор
@@ -42,18 +40,16 @@ def sobelize(img):
     return img_conv / (img_conv.max())
 
 
-def gen_line(img, width=200):
+def gen_line(img, width=50, tw=20):
     chars = open('files/chars.txt').read()[:-1]
 
-    # return 1 - sobelize(Image.open(img))
-    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=30)
+    img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=tw)
     img_t = torch.flatten(img_t, end_dim=1)
-    model = torch.load('files/model.pth')
-    # model = Net()
-    # model.load_state_dict(torch.load('files/model.pth'))
-    # model.eval()
+    # return img_t.shape
+    # t = torch.zeros(size=[1, 3, 20, 10])
 
-    # return model(img_t).argmax(axis=1)
+    model = torch.load('files/model.pth')
+
     counter = width
     art = ''
     for ch in model(img_t).argmax(axis=1):
@@ -65,7 +61,10 @@ def gen_line(img, width=200):
     return art
 
 
-# gen_line('files/test_line.jpg')
 with open('test.txt', 'w') as f:
-    f.write(gen_line('files/test2.jpg'))
-# save_image(gen_line('files/test2.jpg'), 'test.jpg')
+    for i in range(10, 100, 10):
+        f.write(str(i))
+        f.write(gen_line('files/test2.jpg', tw=i))
+        f.write('\n')
+# save_image(1 - sobelize(Image.open('test2.jpg')), 'test.jpg')
+# gen_line('files/test2.jpg')

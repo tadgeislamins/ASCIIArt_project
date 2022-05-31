@@ -142,7 +142,7 @@ def fit(
         # plot.append((epoch_train_losses[-1], epoch_eval_losses[-1]))
 
 
-# model = models.resnet18(pretrained=True)
+model = models.resnet18(pretrained=True)
 
 for param in model.parameters():
     param.requires_grad = False
