@@ -7,7 +7,6 @@ import pandas as pd
 
 cmd_create_shade = 'Создать тональный ASCII-арт'
 cmd_create_line = 'Создать контурный ASCII-арт'
-cmd_premade = 'Выбрать ASCII-арт из коллекции'
 cmd_goose = 'Запустить гуся'
 
 msg_init = 'Что вы хотите сделать?'
@@ -35,7 +34,7 @@ def start(message):
         df = pd.concat([df, row])
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for cmd in [cmd_create_shade, cmd_create_line, cmd_premade, cmd_goose]:
+    for cmd in [cmd_create_shade, cmd_create_line, cmd_goose]:
         markup.add(types.KeyboardButton(cmd))
     bot.send_message(message.from_user.id, msg_init, reply_markup=markup)
 
@@ -49,9 +48,6 @@ def functions(message):
 
     if message.text == cmd_create_line:
         df.at[message.from_user.id, 'type'] = 'line'
-        bot.send_message(message.from_user.id, msg_guide_sendimg.format(str(df.at[message.from_user.id, 'line_size'])))
-
-    elif message.text == cmd_premade:
         bot.send_message(message.from_user.id, msg_wip)
 
     elif message.text == cmd_goose:
@@ -77,8 +73,6 @@ def send_art(message):
 
     if df.at[message.from_user.id, 'type'] == 'shade':
         bot.send_document(message.from_user.id, StringIO(gen_shading(img, width=df.at[message.from_user.id, 'shade_size'])), visible_file_name='art.txt')
-    elif df.at[message.from_user.id, 'type'] == 'line':
-        bot.send_message(message.from_user.id, msg_wip)
     else:
         bot.send_message(message.from_user.id, msg_notype)
 
