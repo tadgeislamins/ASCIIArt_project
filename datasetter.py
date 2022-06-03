@@ -3,13 +3,12 @@ from torchvision import transforms
 from torchvision.utils import save_image
 from os import mkdir
 from char_tensors import char_t
-# from numpy.random import randint
 
-width = 30
+width = 10
 
 tf = transforms.Compose([
     transforms.RandomRotation(10, fill=1),
-    transforms.Pad(width // 2, fill=1),
+    transforms.Pad(width // 4, fill=1),
     transforms.RandomCrop([width * 2, width]),
     # transforms.CenterCrop(224)
 ])
@@ -17,7 +16,7 @@ tf = transforms.Compose([
 mkdir('trainset')
 
 for ch in open('files/chars.txt').read()[:-1]:
-    t0 = char_t(ch, width=width)
+    t0 = char_t(ch, width=width, textsize=2)
     mkdir('trainset/' + str(ord(ch)))
 
     for i in range(1000):

@@ -11,7 +11,7 @@ def resize(image, w, th):
     return F.resize(transform(image), [h, w]), h // th
 
 
-def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2, split=True):
+def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2, extend=False):
     try:
         image = Image.open(image)
     except AttributeError:
@@ -24,6 +24,10 @@ def pic_to_tensors(image, ascii_w=50, tw=10, tratio=2, split=True):
 
     tlist = []
     for long_tensors in torch.tensor_split(t_resized, ascii_h, dim=1):
-        tlist.append(torch.stack(torch.tensor_split(long_tensors, ascii_w, dim=2)))
+        if extend:
+            ext = T.CenterCrop(224)
+            tlist.append(torch.stack([ext(t) for t in torch.tensor_split(long_tensors, ascii_w, dim=2)]))
+        else:
+            tlist.append(torch.stack(torch.tensor_split(long_tensors, ascii_w, dim=2)))
     stacked = torch.stack(tlist)
     return stacked

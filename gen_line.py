@@ -7,6 +7,7 @@ from torchvision.datasets import ImageFolder
 from torch.nn.functional import conv2d
 from torchvision.utils import save_image
 
+
 def sobelize(img):
     # получаем тензор
     img_matrix = np.array(img)[:, :, 0:3]
@@ -40,10 +41,11 @@ def sobelize(img):
     return img_conv / (img_conv.max())
 
 
-def gen_line(img, width=50, tw=20):
+def gen_line(img, width=20, tw=10):
     chars = open('files/chars.txt').read()[:-1]
 
     img_t = pic_to_tensors(1 - sobelize(Image.open(img)), ascii_w=width, tw=tw)
+    # return(img_t[4][9])
     img_t = torch.flatten(img_t, end_dim=1)
     # return img_t.shape
     # t = torch.zeros(size=[1, 3, 20, 10])
@@ -62,9 +64,7 @@ def gen_line(img, width=50, tw=20):
 
 
 with open('test.txt', 'w') as f:
-    for i in range(10, 100, 10):
-        f.write(str(i))
-        f.write(gen_line('files/test2.jpg', tw=i))
-        f.write('\n')
+    f.write(gen_line('files/test_slash.png'))
 # save_image(1 - sobelize(Image.open('test2.jpg')), 'test.jpg')
+# save_image(gen_line('files/test_slash.png'), 'smalltest.jpg')
 # gen_line('files/test2.jpg')

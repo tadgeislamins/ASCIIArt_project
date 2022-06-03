@@ -155,7 +155,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters())
 device = "cpu"
 
-fit(model, 6, train_dataloader, test_dataloader, optimizer, criterion, device=device)
+fit(model, 5, train_dataloader, test_dataloader, optimizer, criterion, device=device)
 torch.save(model, 'files/model.pth')
 
 # tf = ToTensor()
