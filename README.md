@@ -7,6 +7,8 @@
 
 Описание структуры/архитектуры файлов с кодом: ... (надо ли?).
 
+![](https://github.com/tadgeislamins/ASCIIArt_project/blob/main/files/ASCII.drawio.png)
+
 Для обращения напрямую к коду требуется установка следующих библиотек: 
 * pytorch
 * PIL
