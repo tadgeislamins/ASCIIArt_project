@@ -15,10 +15,9 @@ def match(val, list):
             return match(val, list[half:])
 
 
-def gen_shading(img, width=50):
-    chlist = [chr(i) for i in range(33, 127)]
+def gen_shading(img, chlist, width=50):
 
-    tones = pd.Series([float(char_t(ch).mean()) for ch in chlist], index=chlist)
+    tones = pd.Series([float(char_t(ch).mean()) for ch in chlist], index=list(chlist))
     tones = ((tones - tones.min()) / (tones.max() - tones.min())).sort_values()
 
     img_t = pic_to_tensors(img, ascii_w=width).mean([2, 3, 4])
