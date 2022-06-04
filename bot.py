@@ -32,7 +32,7 @@ df = pd.DataFrame()
 def start(message):
     global df
     if message.from_user.id not in df.index:
-        row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50, 'chars': ''.join([chr(i) for i in range(32, 127)])}, index=[message.from_user.id])
+        row = pd.DataFrame({'type': '', 'shade_size': 50, 'line_size': 50, 'chars': ''.join([chr(i) for i in range(33, 127)])}, index=[message.from_user.id])
         df = pd.concat([df, row])
     else:
         df.at[message.from_user.id, 'type'] = ''
